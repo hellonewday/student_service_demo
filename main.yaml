@@ -1,0 +1,191 @@
+---
+swagger: "2.0"
+info:
+  title: "VNPT EKYC PLATFORM"
+  version: "1.0"
+  description: "Sản phẩm của VNPT-IT"
+host: "localhost:44305"
+basePath: "/v1"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+securityDefinitions:
+  key:
+    type: "apiKey"
+    in: "header"
+    name: "Authorization"
+paths:
+  /students:
+    post:
+      tags:
+      - "Students"
+      operationId: "PublicCreateStudents"
+      summary: "Thêm sinh viên mới"
+      parameters:
+      - schema:
+          $ref: "#/definitions/Student"
+        name: "Student"
+        in: "body"
+        description: "Thêm sinh viên mới vào hệ thống"
+      responses:
+        201:
+          description: "Khởi tạo thành công"
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      security:
+      - key: []
+    get:
+      tags:
+      - "Students"
+      operationId: "PublicFindStudents"
+      summary: "Liệt kê danh sách sinh viên"
+      parameters: null
+      responses:
+        200:
+          description: "Thao tác thành công"
+          schema:
+            $ref: "#/definitions/StudentsResponse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+  /students/{id}:
+    get:
+      tags:
+      - "Students"
+      operationId: "PublicFindStudentsById"
+      summary: "Lấy thông tin chi tiết của sinh viên"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "integer"
+        required: true
+        description: " Id của student"
+      responses:
+        200:
+          description: "Thao tác thành công"
+          schema:
+            $ref: "#/definitions/StudentResponse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      security:
+      - key: []
+    delete:
+      tags:
+      - "Students"
+      operationId: "PublicDeleteStudentsById"
+      summary: "Xóa sinh viên"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "integer"
+        required: true
+        description: "Xóa sinh viên trong hệ thống"
+      responses:
+        200:
+          description: "Thao tác thành công"
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      security:
+      - key: []
+    put:
+      tags:
+      - "Students"
+      operationId: "PublicUpdateStudents"
+      summary: "Sửa thông tin sinh viên"
+      parameters:
+      - schema:
+          $ref: "#/definitions/Student"
+        name: "Student"
+        in: "body"
+        description: "Dữ liệu sinh viên cần sửa trong hệ thống"
+      - name: "id"
+        in: "path"
+        type: "integer"
+        required: true
+        description: "Sửa thông tin theo mã sinh viên"
+      responses:
+        200:
+          description: "Thao tác thành công"
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      security:
+      - key: []
+definitions:
+  DefaultResponse:
+    type: "object"
+    required:
+    - "message"
+    - "success"
+    properties:
+      success:
+        type: "string"
+        description: "Trạng thái"
+      message:
+        type: "string"
+        description: "Thông báo từ hệ thống"
+  StudentResponse:
+    type: "object"
+    required:
+    - "student"
+    - "success"
+    properties:
+      student:
+        $ref: "#/definitions/Student"
+        description: "Thông tin sinh viên"
+      success:
+        type: "boolean"
+        description: "Trạng thái phản hồi"
+  Student:
+    type: "object"
+    required:
+    - "name"
+    - "id"
+    - "age"
+    properties:
+      name:
+        type: "string"
+        description: "Thông tin tên sinh viên"
+      id:
+        type: "number"
+        format: "int32"
+        description: "ID thuộc tính"
+      age:
+        type: "number"
+        format: "int32"
+        description: "Thông tin tuổi sinh viên"
+  StudentsResponse:
+    type: "object"
+    required:
+    - "data"
+    - "success"
+    - "counts"
+    properties:
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/Student"
+      success:
+        type: "boolean"
+        description: "Trạng thái phản hồi"
+      counts:
+        type: "number"
+        format: "int32"
+        description: "Số lượng bản ghi"
